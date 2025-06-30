@@ -1,0 +1,287 @@
+```html name=index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Win $800 Instantly</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .logo {
+            width: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        h1 {
+            font-size: 26px;
+            color: #000;
+        }
+        .live-view {
+            display: inline-flex;
+            align-items: center;
+            background: #fff;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+            border-radius: 24px;
+            padding: 7px 16px 7px 10px;
+            margin: 14px 0 10px 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #e53935;
+            letter-spacing: 0.03em;
+            position: relative;
+            animation: pulse-shadow 1.5s infinite;
+        }
+        .live-icon {
+            width: 22px;
+            height: 22px;
+            margin-right: 7px;
+            display: inline-block;
+            vertical-align: middle;
+            position: relative;
+        }
+        @keyframes pulse-shadow {
+            0% { box-shadow: 0 0 0 0 rgba(229,57,53, 0.4);}
+            70% { box-shadow: 0 0 0 8px rgba(229,57,53, 0);}
+            100% { box-shadow: 0 0 0 0 rgba(229,57,53, 0);}
+        }
+        .live-dot {
+            display: block;
+            width: 12px;
+            height: 12px;
+            background: #e53935;
+            border-radius: 50%;
+            box-shadow: 0 0 8px 2px #e53935bb;
+            margin: 0 5px 0 0;
+            animation: pulse 1.2s infinite alternate;
+            position: absolute;
+            left: 5px; top: 5px;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1);}
+            100% { transform: scale(1.25);}
+        }
+        .viewers {
+            font-size: 15px;
+            color: #222;
+            margin: 0 0 18px 0;
+        }
+        .countdown {
+            color: red;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .button {
+            display: block;
+            margin: 10px auto;
+            padding: 15px;
+            width: 80%;
+            font-size: 18px;
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .android {
+            background-color: #16a34a;
+        }
+        .android:hover {
+            background-color: #15803d;
+        }
+        .iphone {
+            background-color: #2563eb;
+        }
+        .iphone:hover {
+            background-color: #1d4ed8;
+        }
+        .comment {
+            background: white;
+            padding: 10px;
+            margin: 10px auto;
+            border-radius: 10px;
+            width: 90%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
+        }
+        .comment img {
+            width: 50px;
+            border-radius: 50%;
+        }
+        .name {
+            font-weight: bold;
+        }
+        #clickid-section {
+            margin: 20px 0;
+            padding: 12px;
+            background: #e3ebff;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        #clickid-value {
+            font-weight: bold;
+            color: #2d6cdf;
+        }
+        @media (max-width: 600px) {
+            h1 { font-size: 1.2em; }
+            .button { font-size: 1em; }
+            .comment { font-size: 0.95em; }
+            .live-view { font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div style="text-align: center; margin-top: 20px;">
+        <img src="https://cdn-icons-png.flaticon.com/512/4225/4225976.png" alt="Gift Icon" class="logo">
+    </div>
+
+    <!-- Facebook-like LIVE section -->
+    <div class="live-view">
+        <span class="live-icon">
+            <!-- Red animated dot -->
+            <span class="live-dot"></span>
+            <!-- SVG "LIVE" text (optional, looks like FB live icon) -->
+            <svg width="22" height="22" viewBox="0 0 22 22" style="vertical-align:middle;" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="6" width="18" height="10" rx="5" fill="#e53935"/>
+                <text x="11" y="15" text-anchor="middle" font-size="8" fill="#fff" font-family="Arial" font-weight="bold">LIVE</text>
+            </svg>
+        </span>
+        <span id="live-view-num">1,061</span> LIVE
+    </div>
+    <div class="viewers">
+        People are watching this offer right now
+    </div>
+
+    <h1>Confirm your email and instantly win a $800 shopping reward!</h1>
+    <div class="countdown">
+        ⏰ Offer expires in: <span id="timer">05:00</span>
+    </div>
+
+    <!-- Click ID Display Section -->
+    <div id="clickid-section">
+        Click ID: <span id="clickid-value">Not found</span>
+    </div>
+
+    <!-- CTA buttons with cta-offer class -->
+    <a href="https://singingfiles.com/show.php?l=0&u=1159972&id=68776" class="button android cta-offer">🎁 Claim on Android</a>
+    <a href="https://singingfiles.com/show.php?l=0&u=1159972&id=68777" class="button iphone cta-offer">🎉 Claim on iPhone</a>
+
+    <div id="comments"></div>
+
+    <script>
+    // ClickID tracking system
+    function getClickID() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('clickid');
+    }
+    function showClickID(clickid) {
+        const el = document.getElementById('clickid-value');
+        if (el) {
+            el.textContent = clickid ? clickid : 'Not found';
+            el.style.color = clickid ? "#1a9d46" : "#c0392b";
+        }
+    }
+    function updateCTALinks(clickid) {
+        if (!clickid) return;
+        const ctaButtons = document.querySelectorAll('.cta-offer');
+        ctaButtons.forEach(btn => {
+            if (btn.tagName.toLowerCase() === 'a') {
+                let url;
+                try {
+                    url = new URL(btn.href);
+                } catch {
+                    url = new URL(btn.getAttribute('href'), window.location.origin);
+                }
+                url.searchParams.set('s1', clickid);
+                btn.href = url.toString();
+            }
+        });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const clickid = getClickID();
+        showClickID(clickid);
+        updateCTALinks(clickid);
+    });
+    </script>
+
+    <script>
+    // Facebook-like live viewer number animation
+    let minView = 953, maxView = 1312;
+    let liveView = Math.floor(Math.random() * (maxView - minView + 1)) + minView;
+    const liveViewNum = document.getElementById('live-view-num');
+    function animateLiveView() {
+        // Randomly pick to increment or decrement
+        let change = Math.random();
+        if (change < 0.45 && liveView > minView) {
+            // 45% chance to decrease
+            liveView -= Math.floor(Math.random() * 3); // -1 or -2
+        } else if (change > 0.55 && liveView < maxView) {
+            // 45% chance to increase
+            liveView += Math.floor(Math.random() * 3); // +1 or +2
+        }
+        // Otherwise stays the same (10% chance)
+        // Update display with comma
+        liveViewNum.textContent = liveView.toLocaleString();
+        // Animate every 2-4 seconds randomly
+        setTimeout(animateLiveView, Math.random()*2000 + 1800);
+    }
+    animateLiveView();
+    </script>
+
+    <script>
+    // Countdown timer
+    let time = 300;
+    const timer = document.getElementById('timer');
+    setInterval(() => {
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+        timer.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+        if (time > 0) time--;
+    }, 1000);
+
+    // Comments
+    const commentsData = [
+        { name: "Jessica M.", text: "Wow! I really got a $800 shopping reward! Just confirmed my email 🎉", img: "https://randomuser.me/api/portraits/women/44.jpg" },
+        { name: "Robert D.", text: "This is real! I used my Android and it worked instantly.", img: "https://randomuser.me/api/portraits/men/46.jpg" },
+        { name: "Emily J.", text: "I thought it was fake, but I just received my reward! 😱", img: "https://randomuser.me/api/portraits/women/55.jpg" },
+        { name: "Kevin P.", text: "Signed up in 1 minute and boom, $800!", img: "https://randomuser.me/api/portraits/men/33.jpg" },
+        { name: "Sophia R.", text: "Confirmed my email, claimed on iPhone! 💖", img: "https://randomuser.me/api/portraits/women/65.jpg" },
+        { name: "Daniel W.", text: "Shared with my friends too. Easy money!", img: "https://randomuser.me/api/portraits/men/52.jpg" },
+        { name: "Laura G.", text: "Literally free $800 – can't believe it 😍", img: "https://randomuser.me/api/portraits/women/36.jpg" },
+        { name: "Mark L.", text: "Worked without any issue!", img: "https://randomuser.me/api/portraits/men/25.jpg" },
+        { name: "Anna B.", text: "Best offer I've seen this year!", img: "https://randomuser.me/api/portraits/women/88.jpg" },
+        { name: "James T.", text: "It redirected me, I completed it, got $800!", img: "https://randomuser.me/api/portraits/men/58.jpg" },
+        { name: "Nina H.", text: "Fast and real! 🎯", img: "https://randomuser.me/api/portraits/women/29.jpg" },
+        { name: "Chris F.", text: "No tricks – it really pays.", img: "https://randomuser.me/api/portraits/men/60.jpg" },
+        { name: "Olivia K.", text: "Shared with my cousin. Both got paid!", img: "https://randomuser.me/api/portraits/women/40.jpg" },
+        { name: "Liam Z.", text: "Used USA VPN and it worked 🔥", img: "https://randomuser.me/api/portraits/men/42.jpg" },
+        { name: "Rachel S.", text: "Too good! Instant result 💸", img: "https://randomuser.me/api/portraits/women/22.jpg" },
+        { name: "Tom E.", text: "Thanks for sharing this offer!", img: "https://randomuser.me/api/portraits/men/18.jpg" },
+        { name: "Grace M.", text: "Confirmed email, done ✅", img: "https://randomuser.me/api/portraits/women/13.jpg" },
+        { name: "Leo V.", text: "Works best on Android", img: "https://randomuser.me/api/portraits/men/66.jpg" },
+        { name: "Mia N.", text: "Recommended to everyone 💯", img: "https://randomuser.me/api/portraits/women/59.jpg" },
+    ];
+    const commentsContainer = document.getElementById('comments');
+    commentsData.forEach(c => {
+        commentsContainer.innerHTML += `
+            <div class="comment">
+                <img src="${c.img}" alt="User"/>
+                <div>
+                    <div class="name">${c.name}</div>
+                    <div>${c.text}</div>
+                </div>
+            </div>
+        `;
+    });
+    </script>
+</body>
+</html>
+```
